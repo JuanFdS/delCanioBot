@@ -1,6 +1,6 @@
 module Lib where
 
-import Test.QuickCheck (Arbitrary(..), sample', elements, Gen(..), discard, shuffle)
+import Test.QuickCheck (Arbitrary(..), generate, elements, Gen(..), discard, shuffle, choose, frequency)
 import Data.List (intercalate, nub)
 import Control.Monad (mapM_)
 import Data.Coerce (coerce)
@@ -10,7 +10,6 @@ newtype DelCanio = DelCanio String deriving (Eq, Show, Ord)
 
 rimasDelCanio :: [String]
 rimasDelCanio = [
-    "",
     "de caño",
     "de antaño",
     "aledaño",
@@ -25,8 +24,13 @@ rimasDelCanio = [
     "hace daño"
     ]
 
-generadorDeRimas :: Gen [String]
-generadorDeRimas = take 4 <$> shuffle rimasDelCanio
+generadorTamanio :: Gen Int
+generadorTamanio = frequency [(10, choose (3,4)), (1, return 5)]
 
-versosDelCanio :: IO [String]
-versosDelCanio = sample' $ ("Nico Del Caño " <>) . intercalate " " . filter (not.null) <$> generadorDeRimas
+generadorDeRimas :: Gen [String]
+generadorDeRimas = do
+    n <- generadorTamanio
+    take n <$> shuffle rimasDelCanio
+
+versosDelCanio :: IO String
+versosDelCanio = generate $ ("Nico Del Caño " <>) . intercalate " " . filter (not.null) <$> generadorDeRimas
