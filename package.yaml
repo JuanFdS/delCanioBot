@@ -22,6 +22,12 @@ description:         Please see the README on GitHub at <https://github.com/Juan
 dependencies:
 - base >= 4.7 && < 5
 - QuickCheck
+- servant
+- servant-server
+- transformers
+- aeson
+- wai
+- warp
 
 library:
   source-dirs: src
@@ -34,8 +40,10 @@ executables:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
+    - -Wall
     dependencies:
     - delCanio
+
 
 tests:
   delCanio-test:
@@ -47,3 +55,8 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - delCanio
+    - servant-client
+    - warp >= 3.2.4
+    - http-client
+    - http-types
+    - hspec

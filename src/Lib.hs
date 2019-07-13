@@ -1,10 +1,12 @@
-module Lib(versosDelCanio) where
+
+module Lib(generadorCanio) where
 
 import           Test.QuickCheck                ( generate
                                                 , Gen
                                                 , shuffle
                                                 , choose
                                                 , frequency
+                                                , variant
                                                 )
 
 newtype DelCanio = DelCanio String deriving (Eq, Show, Ord)
@@ -33,11 +35,9 @@ generadorDeRimas = do
     n <- generadorTamanio
     take n <$> shuffle rimasDelCanio
 
-versosDelCanio :: IO String
-versosDelCanio =
-    generate
-        $   ("Nico Del Caño " <>)
-        .   unwords
-        .   filter (not . null)
-        <$> generadorDeRimas
-    
+generadorDeVersos :: Gen String
+generadorDeVersos = ("Nico Del Caño " <>) .   unwords .   filter (not . null) <$> generadorDeRimas
+
+generadorCanio :: IO String
+generadorCanio =
+    generate generadorDeVersos
