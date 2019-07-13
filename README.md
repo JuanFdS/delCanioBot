@@ -42,9 +42,9 @@ Estoy usando la imagen de docker para subir a Heroku
 ## TODO
 
 - [x] Servir un endpoint con `delCanio` goodness via REST
-- [ ] Deploy a Heroku
-- [ ] Postear con una cuenta de Twitter
+- [x] Deploy a Heroku
+- [x] Postear con una cuenta de Twitter
 - [ ] Generar imagenes aplicando los pedacitos de frases
-- [ ] Schedule de Heroku para :point_up: cada tanto
+- [x] Schedule de Heroku para :point_up: cada tanto
 - [ ] Usar una base de datos para almacenar `delCanio`s
 - [ ] Usar twitter para agregar a la base de datos de `delCanio`
