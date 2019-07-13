@@ -14,7 +14,8 @@ import           Data.List
 import           App hiding (getCanio)
 
 getCanio :: ClientM Canio
-getCanio = client canioApi
+raw :: Method -> ClientM Response
+getCanio :<|> raw = client canioApi
 
 spec :: Spec
 spec = do

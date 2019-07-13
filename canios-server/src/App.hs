@@ -18,6 +18,7 @@ import           System.Environment
 
 type CanioApi =
   "canio" :> Get '[JSON] Canio
+  :<|> Raw
 
 canioApi :: Proxy CanioApi
 canioApi = Proxy
@@ -39,6 +40,7 @@ mkApp = return $ serve canioApi server
 server :: Server CanioApi
 server =
   getCanio
+  :<|> serveDirectoryWebApp "canios-server/static"
 
 getCanio :: Handler Canio
 getCanio = Canio <$> liftIO generadorCanio

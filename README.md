@@ -24,6 +24,16 @@ Los últimos 2 se pueden correr con `$ stack exec canios-server` y `stack exec c
 
 Una imagen para todo! `docker-compose up` to your heart's contempt.
 
+
+## Deploy
+Estoy usando la imagen de docker para subir a Heroku
+
+1. Asegurarse de estar logeado a Heroku `$ heroku login` y al hub `$ heroku container:login`
+1. Buildear la imagen `docker build -t web .`
+1. Empujar la imagen `heroku container:push web`
+1. Hacer el deploy `heroku container:release web`
+
+
 ## TODO
 
 - [x] Servir un endpoint con `delCanio` goodness via REST

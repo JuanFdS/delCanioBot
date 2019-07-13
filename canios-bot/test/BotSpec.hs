@@ -1,5 +1,8 @@
 
 module BotSpec where
+    
+import           Test.Hspec
 
-main :: IO ()
-main = putStrLn "Test suite not yet implemented"
+spec :: Spec
+spec = xdescribe "bot" $ do
+    it "hace cosas de bot" pending

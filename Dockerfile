@@ -18,6 +18,10 @@ CMD [ "stack", "exec", "canios-server" ]
 
 FROM base
 
+LABEL Author="Joaco <j@florius.com.ar>"
+
+WORKDIR /ops
+
 COPY --from=build /ops/build/ /ops/
 
 CMD [ "/ops/canios-server" ]
