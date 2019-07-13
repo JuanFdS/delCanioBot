@@ -1,0 +1,10 @@
+version: '3.4'
+services:
+  backend:
+    build: 
+      context: .
+      target: build
+    volumes:
+      - .:/ops
+    ports:
+      - '8082:80'
