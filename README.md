@@ -9,6 +9,15 @@
 
 _Es particularmente comodo `stack build --file-watch --no-copy-bins --ghc-options -Wall --exec="stack exec delCanio-exe"`._
 
+### Organizacion
+Hay varios "paquetes" en el proyecto:
+
+1. `canios`: Biblioteca compartida con la generacion de frases.
+1. `canios-server`: Server web rest.
+1. `canios-cli`: Para cuando necesitas una frase.
+
+los últimos 2 se pueden correr con `$ stack exec canios-server` y `stack exec canios-cli` respectivamente
+
 ### Herramientas piolas
 1. `hlint` linter. `hlint --refactor`
 1. `brittany` para formatear. `$ brittany --write-mode=inplace *.hs` _(o [desde la web](https://hexagoxel.de/brittany/))_.

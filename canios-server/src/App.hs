@@ -10,8 +10,9 @@ import           Network.Wai
 import           Network.Wai.Handler.Warp
 import           Servant
 import           System.IO
-import           Lib
+import           Canios
 import           Control.Monad.IO.Class
+import           System.Environment
 
 -- * api
 
@@ -25,10 +26,10 @@ canioApi = Proxy
 
 run :: IO ()
 run = do
-  let port = 8080
-      settings =
+  port <- maybe 8080 read <$> lookupEnv "PORT"
+  let settings =
         setPort port $
-        setBeforeMainLoop (hPutStrLn stderr ("Escuchando en el puerto " ++ show port)) $
+        setBeforeMainLoop (hPutStrLn stderr ("Escuchando en el puerto " ++ show port))
         defaultSettings
   runSettings settings =<< mkApp
 

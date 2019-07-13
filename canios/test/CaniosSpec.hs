@@ -1,11 +1,11 @@
 
-module LibSpec where
+module CaniosSpec where
 
 import           Test.Hspec
 import           Test.QuickCheck                ( property )
 import           Data.List
 
-import           Lib
+import           Canios
 
 spec :: Spec
 spec = do

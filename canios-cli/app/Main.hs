@@ -1,7 +1,7 @@
 
 module Main where
 
-import           Lib
+import           Canios
 
 main :: IO ()
 main = generadorCanio >>= putStrLn

@@ -4,23 +4,20 @@ LABEL Author="Joaco <j@florius.com.ar>"
 
 WORKDIR /ops
 
-COPY package.yaml package.yaml
-COPY stack.yaml stack.yaml
-COPY stack.yaml.lock stack.yaml.lock
-
-RUN stack setup
-RUN stack build --only-dependencies
-
 COPY . .
 
+RUN stack setup
 RUN stack build --test
+RUN stack install
 
-RUN /ops/utils/cp-bin.sh
+EXPOSE 8080
+ENV PORT 8080
 
 ENTRYPOINT [ "stack" ]
+CMD [ "stack", "exec", "canios-server" ]
 
 FROM base
 
-COPY --from=build /ops/build/delCanio-exe /ops/delCanio-exec
+COPY --from=build /ops/build/ /ops/
 
-CMD [ "/ops/delCanio-exec" ]
+CMD [ "/ops/canios-server" ]

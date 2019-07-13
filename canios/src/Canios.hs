@@ -1,5 +1,5 @@
 
-module Lib(generadorCanio) where
+module Canios(generadorCanio) where
 
 import           Test.QuickCheck                ( generate
                                                 , Gen
