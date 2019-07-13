@@ -5,9 +5,6 @@
 1. Clonar este repo
 1. `$ stack setup` para instalar todas las dependencias
 1. `$ stack build` para compilar
-1. `$ stack exec delCanio-exe` para ejecutar el CLI
-
-_Es particularmente comodo `stack build --file-watch --no-copy-bins --ghc-options -Wall --exec="stack exec delCanio-exe"`._
 
 ### Organizacion
 Hay varios "paquetes" en el proyecto:
@@ -16,7 +13,7 @@ Hay varios "paquetes" en el proyecto:
 1. `canios-server`: Server web rest.
 1. `canios-cli`: Para cuando necesitas una frase.
 
-los últimos 2 se pueden correr con `$ stack exec canios-server` y `stack exec canios-cli` respectivamente
+Los últimos 2 se pueden correr con `$ stack exec canios-server` y `stack exec canios-cli` respectivamente.
 
 ### Herramientas piolas
 1. `hlint` linter. `hlint --refactor`
