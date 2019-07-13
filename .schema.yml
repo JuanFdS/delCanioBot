@@ -1,0 +1,12 @@
+- name: TWITTER_API_KEY
+  type: text
+  required: true
+- name: TWITTER_API_SECRET
+  type: text
+  required: true
+- name: TWITTER_OAUTH_TOKEN
+  type: text
+  required: true
+- name: TWITTER_OAUTH_SECRET
+  type: text
+  required: true

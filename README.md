@@ -12,6 +12,7 @@ Hay varios "paquetes" en el proyecto:
 1. `canios`: Biblioteca compartida con la generacion de frases.
 1. `canios-server`: Server web rest.
 1. `canios-cli`: Para cuando necesitas una frase.
+1. `canios-bot`: Postear en twitter una frase.
 
 Los últimos 2 se pueden correr con `$ stack exec canios-server` y `stack exec canios-cli` respectivamente.
 
@@ -25,9 +26,10 @@ Una imagen para todo! `docker-compose up` to your heart's contempt.
 
 ## TODO
 
-1. Servir un endpoint con `delCanio` goodness via REST
-1. Deploy a Heroku
-1. Postear con una cuenta de Twitter
-1. Schedule de Heroku para :point_up: cada tanto
-1. Usar una base de datos para almacenar `delCanio`s
-1. Usar twitter para agregar a la base de datos de `delCanio`
+- [x] Servir un endpoint con `delCanio` goodness via REST
+- [ ] Deploy a Heroku
+- [ ] Postear con una cuenta de Twitter
+- [ ] Generar imagenes aplicando los pedacitos de frases
+- [ ] Schedule de Heroku para :point_up: cada tanto
+- [ ] Usar una base de datos para almacenar `delCanio`s
+- [ ] Usar twitter para agregar a la base de datos de `delCanio`

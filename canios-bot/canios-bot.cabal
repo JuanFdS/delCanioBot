@@ -1,0 +1,59 @@
+cabal-version: 1.12
+
+name:           canios-bot
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/JuanFdS/delCanio#readme>
+homepage:       https://github.com/JuanFdS/delCanio#readme
+bug-reports:    https://github.com/JuanFdS/delCanio/issues
+author:         Todos somos del Canio
+maintainer:     del@Canio.com
+copyright:      2019 delCanio fanbase
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+
+source-repository head
+  type: git
+  location: https://github.com/JuanFdS/delCanio
+
+library
+  exposed-modules:
+      Twitter
+  hs-source-dirs:
+      src
+  build-depends:
+      bytestring
+    , base >=4.7 && <5
+    , canios
+    , twitter-conduit
+    , dotenv
+    , text
+  default-language: Haskell2010
+
+executable canios-bot-post
+  main-is: Post.hs
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -Wall
+  build-depends:
+      base >=4.7 && <5
+    , canios
+    , canios-bot
+  default-language: Haskell2010
+
+test-suite canios-bot-test
+  other-modules:
+    BotSpec
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -Wall
+  build-depends:
+      QuickCheck
+    , base >=4.7 && <5
+    , canios-bot
+    , hspec
+  default-language: Haskell2010
