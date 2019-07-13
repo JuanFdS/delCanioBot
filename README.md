@@ -25,7 +25,12 @@ Los últimos 2 se pueden correr con `$ stack exec canios-server` y `stack exec c
 Una imagen para todo! `docker-compose up` to your heart's contempt.
 
 
-## Deploy
+## Deploy con buildpack
+Usando [este buildpack](https://github.com/mfine/heroku-buildpack-stack) parece qurer. Así que está todo cableado con GitHub.
+Push a `master` -> deploy.
+
+## ~Deploy Docker~
+_Bueno, no puedo builder la imagen en mi PC :(_
 Estoy usando la imagen de docker para subir a Heroku
 
 1. Asegurarse de estar logeado a Heroku `$ heroku login` y al hub `$ heroku container:login`

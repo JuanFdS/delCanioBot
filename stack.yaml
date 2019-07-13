@@ -5,7 +5,6 @@ packages:
 - ./canios-server
 - ./canios-cli
 - ./canios-bot
-local-bin-path: ./build
 
 extra-deps:
 - twitter-conduit-0.3.0@sha256:67b68511fc19563ff4159ae37188ac3db7dbc6603d81f11c6f1c2dd8ec1f5bd8
