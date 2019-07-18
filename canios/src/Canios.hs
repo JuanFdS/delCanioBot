@@ -20,14 +20,14 @@ data Canio = Canio {
                     }
                     
 posibilidades :: [Canio]
-posibilidades =  [ Canio "de caño" return
+posibilidades =  [ Canio "de caño" conCanio
                  , Canio "de antaño" deAntanio
                  , Canio "aledaño" return
                  , Canio "fumandose un caño" fumandoseUnCanio
                  , Canio "en la cola de un baño" return
                  , Canio "subiendo un peldaño" return
-                 , Canio "metiendo un caño" enUnCanio
-                 , Canio "bailando en el caño" return
+                 , Canio "metiendo un caño" return
+                 , Canio "bailando en el caño" bailandoEnElCanio
                  , Canio "el hitazo del año" return
                  , Canio "en un caño" enUnCanio
                  , Canio "hace daño" return
