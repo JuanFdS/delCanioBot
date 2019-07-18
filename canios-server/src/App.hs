@@ -43,12 +43,16 @@ server =
   :<|> serveDirectoryWebApp "canios-server/static"
 
 getCanio :: Handler CanioDTO
-getCanio = CanioAPI <$> liftIO generadorCanio
+getCanio = liftIO $ CanioDTO <$> fmap unaFrase generadorCanio
 
 newtype Canio = Canio String deriving (Eq, Show, Generic)
 
 canio :: CanioDTO -> String
 canio (CanioDTO str) = str
+
+newtype CanioDTO = CanioDTO {
+      frase:: String
+    } deriving (Generic, Show)
 
 instance ToJSON CanioDTO
 instance FromJSON CanioDTO

@@ -50,7 +50,7 @@ imagenInicial = delCanio
 versoInicial = "Nico Del Caño "
 
 transformarABS :: ImagenDelCanio -> BS.ByteString
-transformarABS = I.encode I.BMP [] . imagen
+transformarABS = I.encode I.PNG [] . imagen
 
 unaImagen :: [Canio] -> IO BS.ByteString
 unaImagen canios = 

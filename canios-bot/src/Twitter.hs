@@ -20,7 +20,8 @@ post canios = do
     twInfo <- getTWInfoFromEnv
     mgr <- newManager tlsManagerSettings
     bs <- unaImagen canios
-    call twInfo mgr $ updateWithMedia (T.pack status) (MediaRequestBody "delCanio" (HTTP.RequestBodyBS bs))
+    res <- call twInfo mgr $ updateWithMedia (T.pack status) (MediaRequestBody "delCanio.png" (HTTP.RequestBodyLBS bs))
+    print res
 
 
 
