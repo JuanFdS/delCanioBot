@@ -30,6 +30,7 @@ library
     , twitter-conduit
     , dotenv
     , text
+    , http-client
   default-language: Haskell2010
 
 executable canios-bot-post

@@ -13,7 +13,7 @@ import           Data.List
 
 import           App hiding (getCanio)
 
-getCanio :: ClientM Canio
+getCanio :: ClientM CanioDTO
 raw :: Method -> ClientM Response
 getCanio :<|> raw = client canioApi
 
@@ -22,7 +22,7 @@ spec = do
     describe "/canio" $ do
         withClient mkApp $ do
             it "devuelve una frase" $ \ env -> do
-                try env getCanio >>= (`shouldSatisfy` (isPrefixOf "Nico Del Ca\241o " . canio))
+                try env getCanio >>= (`shouldSatisfy` (isPrefixOf "Nico Del Caño " . canio))
 
 
 withClient :: IO Application -> SpecWith ClientEnv -> SpecWith ()

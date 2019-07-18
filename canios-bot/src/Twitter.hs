@@ -8,16 +8,20 @@ import Control.Applicative
 import Data.Monoid
 import System.Environment
 import Configuration.Dotenv
+import qualified Network.HTTP.Client as HTTP
 import qualified Data.Text as T
 import qualified Data.Text.IO as T
 import qualified Data.ByteString.Char8 as S8
+import Canios
 
-post :: String -> IO ()
-post status = do
+post :: [Canio] -> IO ()
+post canios = do
+    let status = unaFrase canios
     twInfo <- getTWInfoFromEnv
     mgr <- newManager tlsManagerSettings
-    res <- call twInfo mgr $ update $ T.pack status
-    print res
+    bs <- unaImagen canios
+    call twInfo mgr $ updateWithMedia (T.pack status) (MediaRequestBody "delCanio" (HTTP.RequestBodyBS bs))
+
 
 
 getTWInfoFromEnv :: IO TWInfo

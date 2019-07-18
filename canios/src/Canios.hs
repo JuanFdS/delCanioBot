@@ -1,43 +1,62 @@
 
-module Canios(generadorCanio) where
+module Canios(generadorCanio, unaImagen, unaFrase, verso, fImagen, Canio) where
 
 import           Test.QuickCheck                ( generate
                                                 , Gen
-                                                , shuffle
+                                                , vectorOf
                                                 , choose
                                                 , frequency
                                                 , variant
+                                                , shuffle
                                                 )
+import qualified  Data.ByteString.Lazy.Internal as BS
+import            Imagen
+import qualified Graphics.Image as I
+import qualified Graphics.Image.IO.Formats as I
 
-newtype DelCanio = DelCanio String deriving (Eq, Show, Ord)
-
-rimasDelCanio :: [String]
-rimasDelCanio =
-    [ "de caño"
-    , "de antaño"
-    , "aledaño"
-    , "fumandose un caño"
-    , "en la cola de un baño"
-    , "subiendo un peldaño"
-    , "metiendo un caño"
-    , "bailando en el caño"
-    , "el hitazo del año"
-    , "en un caño"
-    , "con caños"
-    , "hace daño"
-    ]
+data Canio = Canio {
+                        verso :: String,
+                        fImagen :: ImagenDelCanio -> IO ImagenDelCanio
+                    }
+                    
+posibilidades :: [Canio]
+posibilidades =  [ Canio "de caño" return
+                 , Canio "de antaño" deAntanio
+                 , Canio "aledaño" return
+                 , Canio "fumandose un caño" fumandoseUnCanio
+                 , Canio "en la cola de un baño" return
+                 , Canio "subiendo un peldaño" return
+                 , Canio "metiendo un caño" enUnCanio
+                 , Canio "bailando en el caño" return
+                 , Canio "el hitazo del año" return
+                 , Canio "en un caño" enUnCanio
+                 , Canio "hace daño" return
+                 , Canio "con un caño" conCanio
+                ]
 
 generadorTamanio :: Gen Int
 generadorTamanio = frequency [(10, choose (3, 4)), (1, return 5)]
 
-generadorDeRimas :: Gen [String]
-generadorDeRimas = do
+generadorDeCanios :: Gen [Canio]
+generadorDeCanios = do
     n <- generadorTamanio
-    take n <$> shuffle rimasDelCanio
+    take n <$> shuffle posibilidades
 
-generadorDeVersos :: Gen String
-generadorDeVersos = ("Nico Del Caño " <>) .   unwords .   filter (not . null) <$> generadorDeRimas
-
-generadorCanio :: IO String
+generadorCanio :: IO [Canio]
 generadorCanio =
-    generate generadorDeVersos
+    generate generadorDeCanios
+
+imagenInicial = delCanio
+versoInicial = "Nico Del Caño "
+
+transformarABS :: ImagenDelCanio -> BS.ByteString
+transformarABS = I.encode I.BMP [] . imagen
+
+unaImagen :: [Canio] -> IO BS.ByteString
+unaImagen canios = 
+    transformarABS <$> foldl (>>=) imagenInicial (map fImagen canios)
+    
+ 
+unaFrase :: [Canio] -> String
+unaFrase canios =
+    (versoInicial <>) $ unwords $ map verso canios

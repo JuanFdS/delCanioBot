@@ -17,7 +17,7 @@ import           System.Environment
 -- * api
 
 type CanioApi =
-  "canio" :> Get '[JSON] Canio
+  "canio" :> Get '[JSON] CanioDTO
   :<|> Raw
 
 canioApi :: Proxy CanioApi
@@ -42,13 +42,13 @@ server =
   getCanio
   :<|> serveDirectoryWebApp "canios-server/static"
 
-getCanio :: Handler Canio
-getCanio = Canio <$> liftIO generadorCanio
+getCanio :: Handler CanioDTO
+getCanio = CanioAPI <$> liftIO generadorCanio
 
 newtype Canio = Canio String deriving (Eq, Show, Generic)
 
-canio :: Canio -> String
-canio (Canio str) = str
+canio :: CanioDTO -> String
+canio (CanioDTO str) = str
 
-instance ToJSON Canio
-instance FromJSON Canio
+instance ToJSON CanioDTO
+instance FromJSON CanioDTO

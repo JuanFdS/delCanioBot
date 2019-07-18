@@ -8,19 +8,12 @@ import           Data.Functor.Compose
 import           Data.List
 import           Data.List.Index
 
-type Imagen = Image VU RGBA Double
+type Imagen = Image VS RGBA Double
 
 invisible :: AlphaSpace cs e => Pixel cs e -> Bool
 invisible = (==0) . getAlpha
 
-delCaniopng = readImageRGBA VU "/home/juan/Desktop/moton306.png"
-windowsXpWallpaper = readImageRGBA VU "/home/juan/Desktop/xpbliss_7.jpg"
-
-delCanioadaptadopng = do
-    delCanio <- delCaniopng
-    windowsXP <- windowsXpWallpaper
-    let (delCanioAdaptado, _) = adaptSizeCentering delCanio windowsXP
-    return delCanioAdaptado
+delCaniopng = readImageRGBA VS "imagenes/delCanio.png"
 
 overlapImage :: (Array arr cs e, Graphics.Image.Interface.AlphaSpace cs e) =>
                     Image arr cs e -> Image arr cs e -> Image arr cs e
@@ -37,14 +30,6 @@ adaptSizeCentering anImage anotherImage = (centeredImage, centeredAnotherImage)
           centeredAnotherImage = center adaptedAnotherImage (dims anotherImage)
           center imagen (originalY, originalX) = translate (Fill 0) (rows imagen `div` 2 - originalY `div` 2, cols imagen `div` 2 - originalX `div` 2) imagen
           (adaptedImage, adaptedAnotherImage) = adaptCanvasSizes anImage anotherImage
-
--- translateRandomly (x, y) image = 
-
-mostrarDelCanioCentrado = do
-    delCanio <- delCaniopng
-    windowsXP <- windowsXpWallpaper
-    let (delCanioCentrado, _) = adaptSizeCentering delCanio windowsXP
-    displayImage delCanioCentrado
 
 mergeImages anImage anotherImage = uncurry overlapImage $ adaptSizeCentering anImage anotherImage
 
@@ -130,16 +115,16 @@ delCanio :: IO ImagenDelCanio
 delCanio = (\imagenDelCanio -> ImagenDelCanio imagenDelCanio (boundingBox imagenDelCanio)) <$> delCaniopng
 
 conCanio :: ImagenDelCanio -> IO ImagenDelCanio
-conCanio nico = (\arma -> decorarDelCanio (200, 250) (0.5, 0.5) OnTop arma nico) <$> readImageRGBA VU "/home/juan/Desktop/arma.png"
+conCanio nico = (\arma -> decorarDelCanio (200, 250) (0.5, 0.5) OnTop arma nico) <$> readImageRGBA VS "imagenes/arma.png"
 
 enUnCanio :: ImagenDelCanio -> IO ImagenDelCanio
-enUnCanio nico = (\enUnCanio -> decorarDelCanio (0,0) (1.5, 1.5) Behind enUnCanio nico) <$> readImageRGBA VU "/home/juan/Desktop/enUnCanio.jpg"
+enUnCanio nico = (\enUnCanio -> decorarDelCanio (0,0) (1.5, 1.5) Behind enUnCanio nico) <$> readImageRGBA VS "imagenes/enUnCanio.jpg"
 
-deAntanio :: ImagenDelCanio -> ImagenDelCanio
-deAntanio (ImagenDelCanio imagenDelCanio bb) = ImagenDelCanio (G.map sepiaPixel imagenDelCanio) bb
+deAntanio :: ImagenDelCanio -> IO ImagenDelCanio
+deAntanio (ImagenDelCanio imagenDelCanio bb) = return $ ImagenDelCanio (G.map sepiaPixel imagenDelCanio) bb
 
 fumandoseUnCanio :: ImagenDelCanio -> IO ImagenDelCanio
-fumandoseUnCanio nico = (\fumandoseUnCanio -> decorarDelCanio (90, 75) (0.2, 0.2) OnTop fumandoseUnCanio nico) <$> readImageRGBA VU "/home/juan/Desktop/fumandoseUnCanio.png"
+fumandoseUnCanio nico = (\fumandoseUnCanio -> decorarDelCanio (90, 75) (0.2, 0.2) OnTop fumandoseUnCanio nico) <$> readImageRGBA VS "imagenes/fumandoseUnCanio.png"
 
 sepiaPixel :: Pixel RGBA Double -> Pixel RGBA Double
 sepiaPixel unPixel = fromComponents (rojoSepia, verdeSepia, azulSepia, alphaOriginal)

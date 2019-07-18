@@ -11,4 +11,4 @@ spec :: Spec
 spec = do
     describe "generador de frases" $ do
         it "siempre empiezan igual" $ property $ 
-            generadorCanio >>= (`shouldSatisfy` isPrefixOf "Nico Del Ca\241o ")
+            unaFrase <$> generadorCanio >>= (`shouldSatisfy` isPrefixOf "Nico Del Caño ")
