@@ -269,3 +269,12 @@ aledanio nico = do
         boinaTransladada = translateRespectToBB (Abajo, Derecha) nico (0, 60) boinaEscalada
         termoTransladado = translateRespectToBB (Abajo, Derecha) nico (115, 0) termoEscalado
     pure . mergeWithBB OnTop termoTransladado . mergeWithBB OnTop boinaTransladada $ nico
+
+metiendoUnCanio :: ImagenDelCanio -> IO ImagenDelCanio
+metiendoUnCanio nico = do
+    metiendoCanio <- readImageRGBA VS "imagenes/metiendoUnCanio.png"
+    let metiendoCanioEscalado = scaleRespectToBB nico (4, 3) metiendoCanio
+        (nicoAdaptado, metiendoCanioAdaptado) = adaptCanvasSizes' nico $ metiendoCanioEscalado
+        nicoUbicado = translateWithBB IncreaseCanvas (Abajo, Derecha) (0, 130) nicoAdaptado
+        metiendoCanioUbicado = translate' (Abajo, Derecha) (65, 0) metiendoCanioAdaptado
+    pure $ mergeWithBB Behind metiendoCanioUbicado nicoUbicado

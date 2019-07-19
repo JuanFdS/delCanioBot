@@ -26,7 +26,7 @@ posibilidades =  [ Canio "de caño" conCanio
                  , Canio "fumandose un caño" fumandoseUnCanio
                  , Canio "en la cola de un baño" return
                  , Canio "subiendo un peldaño" return
-                 , Canio "metiendo un caño" return
+                 , Canio "metiendo un caño" metiendoUnCanio
                  , Canio "bailando en el caño" bailandoEnElCanio
                  , Canio "el hitazo del año" return
                  , Canio "en un caño" enUnCanio
