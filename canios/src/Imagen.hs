@@ -111,9 +111,9 @@ mostrar = displayImage . imagen
 mostrarConBB :: ImagenDelCanio -> IO ()
 mostrarConBB = mostrar . delCanioWithBB
 
-translateRespectToBB :: ImagenDelCanio -> Dimension -> Imagen -> Imagen
-translateRespectToBB nico (rows, cols) anotherImage =
-    translateIncreasingCanvas (Abajo, Derecha) (rows + (top $ boundingBoxDelCanio nico), cols + (left $ boundingBoxDelCanio nico)) anotherImage
+translateRespectToBB :: DireccionDiagonal -> ImagenDelCanio -> Dimension -> Imagen -> Imagen
+translateRespectToBB direccion nico (rows, cols) anotherImage =
+    translateIncreasingCanvas direccion (rows + (top $ boundingBoxDelCanio nico), cols + (left $ boundingBoxDelCanio nico)) anotherImage
 
 scaleRespectToBB :: ImagenDelCanio -> (Double, Double) -> Imagen -> Imagen
 scaleRespectToBB = scaleRespectToDimensions . dimensions . boundingBoxDelCanio
@@ -186,9 +186,14 @@ increaseCanvasSizeWithBB :: DireccionDiagonal -> Dimension -> ImagenDelCanio -> 
 increaseCanvasSizeWithBB direccion deltaPosicion (ImagenDelCanio imagen bb) =
     ImagenDelCanio (increaseCanvasSize direccion deltaPosicion imagen) (increaseCanvasSizeForBoundingBox direccion deltaPosicion bb)
 
-translateWithBB :: DireccionDiagonal -> Dimension -> ImagenDelCanio -> ImagenDelCanio
-translateWithBB direccion deltaPosicion (ImagenDelCanio imagen bb) =
-    ImagenDelCanio (translateIncreasingCanvas direccion deltaPosicion imagen) (translateBoundingBox direccion deltaPosicion bb)
+data OnEdge = IncreaseCanvas | Crop
+
+translateWithBB :: OnEdge -> DireccionDiagonal -> Dimension -> ImagenDelCanio -> ImagenDelCanio
+translateWithBB onEdge direccion deltaPosicion (ImagenDelCanio imagen bb) =
+    ImagenDelCanio (translateImage direccion deltaPosicion imagen) (translateBoundingBox direccion deltaPosicion bb)
+    where translateImage = case onEdge of
+            IncreaseCanvas -> translateIncreasingCanvas
+            Crop -> translate'
 
 translate' :: DireccionDiagonal -> Dimension -> Imagen -> Imagen
 translate' direccion deltaPosicion = translate (Fill 0) (translation direccion deltaPosicion)
@@ -197,7 +202,7 @@ translateBoundingBox :: DireccionDiagonal -> Dimension -> BoundingBox -> Boundin
 translateBoundingBox direccion deltaPosicion = translateBoundingBox' (translation direccion deltaPosicion)
 
 centerBoundedArea :: ImagenDelCanio -> ImagenDelCanio
-centerBoundedArea imagenDelCanio@(ImagenDelCanio imagen bb) = translateWithBB (Abajo, Derecha) dimensionsUntilCenter imagenDelCanio
+centerBoundedArea imagenDelCanio@(ImagenDelCanio imagen bb) = translateWithBB Crop (Abajo, Derecha) dimensionsUntilCenter imagenDelCanio
         where dimensionsUntilCenter = (dims imagen - (height bb, width bb)) `div` 2 - (left bb, top bb)
 
 adaptCanvasSizes' :: ImagenDelCanio -> Imagen -> (ImagenDelCanio, Imagen)
@@ -214,7 +219,7 @@ delCanioWithBB delCanio@(ImagenDelCanio imagen bb) = ImagenDelCanio (overlapImag
 
 mergeWithBB :: Where -> Imagen -> ImagenDelCanio -> ImagenDelCanio
 mergeWithBB donde anotherImage nico = ImagenDelCanio (overlap anotherImageAdaptada imagenAdaptada) bb
-    where (delCanio@(ImagenDelCanio imagenAdaptada bb), anotherImageAdaptada) = adaptCanvasSizes' nico anotherImage
+    where (ImagenDelCanio imagenAdaptada bb, anotherImageAdaptada) = adaptCanvasSizes' nico anotherImage
           overlap = case donde of
             OnTop -> overlapImage
             Behind -> flip overlapImage
@@ -230,14 +235,14 @@ conCanio :: ImagenDelCanio -> IO ImagenDelCanio
 conCanio nico = do
     arma <- readImageRGBA VS "imagenes/arma.png"
     let armaEscalada = scaleRespectToBB nico (0.5, 0.5) arma
-        armaTransladada = translateRespectToBB nico (150, 150) armaEscalada
+        armaTransladada = translateRespectToBB (Abajo, Derecha) nico (150, 150) armaEscalada
     pure $ mergeWithBB OnTop armaTransladada nico
 
 fumandoseUnCanio :: ImagenDelCanio -> IO ImagenDelCanio
 fumandoseUnCanio nico = do
     porro <- readImageRGBA VS "imagenes/fumandoseUnCanio.png"
     let porroEscalado = scaleRespectToBB nico (0.3, 0.3) porro
-        porroTransladado = translateRespectToBB nico (115, 140) porroEscalado
+        porroTransladado = translateRespectToBB (Abajo, Derecha) nico (115, 140) porroEscalado
     pure $ mergeWithBB OnTop porroTransladado nico
 
 enUnCanio :: ImagenDelCanio -> IO ImagenDelCanio
@@ -252,5 +257,15 @@ bailandoEnElCanio nico = do
     canio <- readImageRGBA VS "imagenes/bailandoEnElCanio.png"
     let canioEscalado = scaleRespectToBB nico (5, 2) canio
         (nicoAdaptado, canioAdaptado) = adaptCanvasSizes' nico $ canioEscalado
-        nicoUbicado = translateWithBB (Abajo, Derecha) (100, 225) nicoAdaptado
+        nicoUbicado = translateWithBB IncreaseCanvas (Abajo, Derecha) (100, 225) nicoAdaptado
     pure $ mergeWithBB Behind canioEscalado nicoUbicado
+
+aledanio :: ImagenDelCanio -> IO ImagenDelCanio
+aledanio nico = do
+    boina <- readImageRGBA VS "imagenes/boina.png"
+    termo <- readImageRGBA VS "imagenes/termo.png"
+    let boinaEscalada = scaleRespectToBB nico (0.4, 0.7) boina
+        termoEscalado = scaleRespectToBB nico (0.85, 0.45) termo
+        boinaTransladada = translateRespectToBB (Abajo, Derecha) nico (0, 60) boinaEscalada
+        termoTransladado = translateRespectToBB (Abajo, Derecha) nico (115, 0) termoEscalado
+    pure . mergeWithBB OnTop termoTransladado . mergeWithBB OnTop boinaTransladada $ nico

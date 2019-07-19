@@ -22,7 +22,7 @@ data Canio = Canio {
 posibilidades :: [Canio]
 posibilidades =  [ Canio "de caño" conCanio
                  , Canio "de antaño" deAntanio
-                 , Canio "aledaño" return
+                 , Canio "aledaño" aledanio
                  , Canio "fumandose un caño" fumandoseUnCanio
                  , Canio "en la cola de un baño" return
                  , Canio "subiendo un peldaño" return
